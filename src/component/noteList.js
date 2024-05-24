@@ -8,13 +8,13 @@ import Swal from 'sweetalert2';
 
 export default function NoteCard({ text, title, id }) {
   const navigate = useNavigate();
-  const { notes, notDispatch } = useContext(NotesContext)
+  const { notes, notDispatch } = useContext(NotesContext);
   const [open, setOpen] = useState(false);
-  const [openShare, setOpenShare] = useState(false)
-  const [noteTitle, setNoteTitle] = useState(title)
-  const [noteText, setNoteText] = useState(text)
-  const [selectedUser, setSelectedUser] = useState('')
-  const [permission, setPermission] = useState('read')
+  const [openShare, setOpenShare] = useState(false);
+  const [noteTitle, setNoteTitle] = useState(title);
+  const [noteText, setNoteText] = useState(text);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [permission, setPermission] = useState('read');
   const [allusers, setAllUsers] = useState([]);
 
   const handleClickOpen = () => {
@@ -22,11 +22,12 @@ export default function NoteCard({ text, title, id }) {
   };
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
-  const handleShareOpen = () => setOpenShare(true)
-  const handleShareClose = () => setOpenShare(false)
+  const handleShareOpen = () => setOpenShare(true);
+  const handleShareClose = () => setOpenShare(false);
+
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -82,11 +83,11 @@ export default function NoteCard({ text, title, id }) {
           Authorization: localStorage.getItem('token')
         }
       });
-      console.log(response.data)
+      console.log(response.data);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -97,13 +98,13 @@ export default function NoteCard({ text, title, id }) {
               Authorization: localStorage.getItem('token'),
             },
           });
-          setAllUsers(response.data)
+          setAllUsers(response.data);
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   return (
     <>

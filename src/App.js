@@ -7,6 +7,7 @@ import Header from './component/pages/header';
 import Login from './component/userAuth/login';
 import Register from './component/userAuth/register';
 import NoteAdd from './component/addNotes';
+import SharedNotesList from './component/sharedNotes';
 import {BrowserRouter,Link,Routes,Route} from 'react-router-dom'
 import { useEffect, useState,useReducer ,useContext} from 'react';
 import axios from 'axios';
@@ -46,6 +47,7 @@ function reducer(state, action) {
 export default function App() {
   const[user,setUser]=useState({})
   const [notes,notDispatch] = useReducer(reducer, [])
+  const[sharedNotes,setShareNotes]=useState([])
   const[users,setUsers]=useState([])
   // useEffect(()=>{
   //  (async()=>{
@@ -122,6 +124,23 @@ export default function App() {
   //     console.log(err)
   //   }
   // }
+  useEffect(()=>{
+    (async()=>{
+      try {
+        const response = await axios.get('http://localhost:3009/api/share/notes', {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        })
+        console.log("asdfgfds",response.data)
+        setShareNotes(response.data)
+      } catch (err) {
+      console.log(err)
+      }
+    
+
+    })()
+  },[])
   
   return (
     <BrowserRouter>
@@ -130,12 +149,13 @@ export default function App() {
    {localStorage.getItem('token') && <NoteAdd/>}
     { localStorage.getItem('token') && <NoteList/>}
     { localStorage.getItem('token') &&<NoteCard/>}
-   { !localStorage.getItem('token') && <Login/>}
+   {/* { !localStorage.getItem('token') && <Login/>} */}
      <div className="App">
        <Routes>
         <Route path='/' element={<NoteCard users={users}/>}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/register' element={<Register/>}/>
+        <Route path='/sharedNotes' element={<SharedNotesList/>}/>
          
        </Routes>
     </div>

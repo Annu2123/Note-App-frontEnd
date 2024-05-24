@@ -57,6 +57,14 @@ export default function Header({user}) {
           </Button>
       
       )}
+        {localStorage.getItem('token')  && (
+       
+      <Link to="/sharedNotes"> <Button color="inherit" style={{ color: 'white' }}>
+        
+         sharedNotes
+       </Button></Link>
+   
+   )}
     </Box>
       </Toolbar>
     </AppBar>
