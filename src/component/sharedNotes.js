@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
-
+import { Card, CardContent, Typography,CardActions, Grid,IconButton, InputLabel, } from '@mui/material';
+import { Edit, Delete, Share } from '@mui/icons-material'
  export default function  SharedNotesList() {
   const [sharedNotes, setSharedNotes] = useState([]);
 
@@ -32,9 +32,16 @@ import { Card, CardContent, Typography, Grid } from '@mui/material';
                 {note.title}
               </Typography>
               <Typography variant="body2" component="p">
-                {note.text}
+                {note.note}
               </Typography>
-            </CardContent>
+              </CardContent>
+        <CardActions style={{ justifyContent: 'flex-end' }}>
+          <IconButton >
+            <Edit />
+          </IconButton>
+
+        </CardActions>
+           
           </Card>
         </Grid>
       ))}
