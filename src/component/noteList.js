@@ -108,7 +108,7 @@ export default function NoteCard({ text, title, id }) {
 
   return (
     <>
-      <Card style={{ margin: '20px', position: 'relative', width: '18rem', backgroundColor: 'lightyellow' }}>
+     {title && <Card style={{ margin: '20px', position: 'relative', width: '18rem', backgroundColor: 'lightyellow' }}>
         <CardContent style={{ textAlign: 'center' }}>
           <Typography variant="h5" component="div">
             {title}
@@ -132,7 +132,7 @@ export default function NoteCard({ text, title, id }) {
           <Share />
         </IconButton>
       </Card>
-
+}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Note</DialogTitle>
         <DialogContent>

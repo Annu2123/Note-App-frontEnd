@@ -76,8 +76,8 @@ const loginPop=()=>{
           const data = response.data
           localStorage.setItem('token', data.token)
           // setToken(response.data.token)
-          loginPop()
           navigate('/')
+          loginPop()
       } catch (err) {
         console.log(err)
         setServerError(err.response.data)

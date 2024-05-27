@@ -8,10 +8,10 @@ import Login from './component/userAuth/login';
 import Register from './component/userAuth/register';
 import NoteAdd from './component/addNotes';
 import SharedNotesList from './component/sharedNotes';
-import {BrowserRouter,Link,Routes,Route} from 'react-router-dom'
+import {BrowserRouter,Link,Routes,Route,Navigate} from 'react-router-dom'
 import { useEffect, useState,useReducer ,useContext} from 'react';
 import axios from 'axios';
-
+import ProtectedRoute from './component/protectedRoute'
 function reducer(state, action) {
   switch (action.type) {
     case "GET_NOTES": {
@@ -45,6 +45,7 @@ function reducer(state, action) {
   }
 }
 export default function App() {
+  const[token,setToken]=useState(localStorage.getItem('token')|| null)
   const[user,setUser]=useState({})
   const [notes,notDispatch] = useReducer(reducer, [])
   const[sharedNotes,setShareNotes]=useState([])
@@ -74,7 +75,7 @@ export default function App() {
         }
       }
     })()
-  }, [])
+  }, [token])
   
   useEffect(() => {
     (async () => {
@@ -92,7 +93,7 @@ export default function App() {
         }
       }
     })()
-  }, [user])
+  }, [user,token])
   useEffect(() => {
     (async () => {
       if (localStorage.getItem('token') && user) {
@@ -110,7 +111,7 @@ export default function App() {
         }
       }
     })()
-  }, [user])
+  }, [user,token])
   // const setUserLogin=async(data)=>{
   //   try{
   //     const response=await axios.get('http://localhost:3009/api/account',{
@@ -140,28 +141,37 @@ export default function App() {
     
 
     })()
-  },[])
+  },[token])
   
+  // const token = localStorage.getItem('token')
   return (
     <BrowserRouter>
-    <NotesContext.Provider value={{notes,notDispatch}}>
-    <Header user={user}/>
-   {localStorage.getItem('token') && <NoteAdd/>}
-    { localStorage.getItem('token') && <NoteList/>}
-    { localStorage.getItem('token') &&<NoteCard/>}
-   {/* { !localStorage.getItem('token') && <Login/>} */}
-     <div className="App">
-       <Routes>
-        <Route path='/' element={<NoteCard users={users}/>}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/sharedNotes' element={<SharedNotesList/>}/>
+    <NotesContext.Provider value={{ notes, notDispatch }}>
+      <Header user={user} />
+      <div className="App">
+        <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
          
-       </Routes>
-    </div>
+          <Route 
+            path='/sharedNotes' 
+            element={
+              <ProtectedRoute token={token}>
+                <SharedNotesList />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
+        {token && (
+          <>
+            <NoteAdd />
+            <NoteList />
+            <NoteCard />
+          </>
+        )}
+      </div>
     </NotesContext.Provider>
-   
-    </BrowserRouter>
+  </BrowserRouter>
    
   )
 }
